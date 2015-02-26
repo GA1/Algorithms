@@ -11,11 +11,11 @@ public class PointSET {
 //	of points in the set in the worst case; it should support nearest() and range() in time proportional to the 
 //	number of points in the set.
 
-	private HashSet<Point2D> points;
+	private SET<Point2D> points;
 	
 	// construct an empty set of points
 	public PointSET() {
-		points = new HashSet<Point2D>();
+		points = new SET<Point2D>();
 	}
 
 	// is the set empty?
