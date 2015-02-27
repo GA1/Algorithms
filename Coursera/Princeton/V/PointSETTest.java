@@ -1,3 +1,4 @@
+
 import static org.junit.Assert.*;
 
 import java.util.HashSet;
@@ -34,9 +35,9 @@ public class PointSETTest {
 		pointSet.nearest(null);
 	}
 	
-	@Test (expected = NullPointerException.class)
+	@Test 
 	public void test0050() {
-		pointSet.nearest(new Point2D(1, 2));
+		assertNull(pointSet.nearest(new Point2D(1, 2)));
 	}
 	
 	@Test
@@ -128,6 +129,7 @@ public class PointSETTest {
 		Iterable<Point2D> iterable = pointSet.range(new RectHV(0.0059999999000000005, 0.0060000001, 0.21099999989999998, 0.2110000001));
 		assertTrue(iteratorContainsAllElementsFromTheSetAndNothingElse(iterable.iterator(), expected) );
 	}
+	
 	
 		private boolean iteratorContainsAllElementsFromTheSetAndNothingElse(Iterator<Point2D> it, Set<Point2D> set) {
 			int counter = 0;

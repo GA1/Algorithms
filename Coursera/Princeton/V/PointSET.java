@@ -25,7 +25,7 @@ public class PointSET {
 
 	// number of points in the set
 	public int size() {
-		return points.size();
+		return points == null ? 0 : points.size();
 	}
 
 	// add the point to the set (if it is not already in the set)
@@ -60,8 +60,10 @@ public class PointSET {
 
 	// a nearest neighbor in the set to point p; null if the set is empty
 	public Point2D nearest(Point2D p) {
-		if (p == null || points.isEmpty())
+		if (p == null)
 			throw new NullPointerException();
+		if (points.size() == 0)
+			return null;
 		double lowestSquaredDistance = Double.POSITIVE_INFINITY;
 		Point2D nearest = null;
 		for (Point2D p2: points) {
