@@ -1,4 +1,4 @@
-public class Point2D implements Comparable<Point2D> {
+public class Point2D implements Comparable<Point2D>  {
 	
 	private double x;
 	private double y;
