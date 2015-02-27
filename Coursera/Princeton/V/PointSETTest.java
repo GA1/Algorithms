@@ -10,9 +10,9 @@ import org.junit.Test;
 
 public class PointSETTest {
 
-	PointSET pointSet = new PointSET(); 
-	Point2D p, p1, p2;
-	Set<Point2D> expected = new HashSet<Point2D>();
+	private PointSET pointSet = new PointSET(); 
+	private Point2D p, p1, p2;
+	private Set<Point2D> expected = new HashSet<Point2D>();
 	
 	@Test (expected = NullPointerException.class)
 	public void test0010() {
