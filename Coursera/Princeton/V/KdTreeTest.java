@@ -279,13 +279,13 @@ public class KdTreeTest {
 	
 		private boolean iteratorContainsAllElementsFromTheSetAndNothingElse(Iterator<Point2D> it, Set<Point2D> set) {
 			int counter = 0;
+			if (counter != set.size())
+				return false;
 			while (it.hasNext()) {
 				counter++;
 				if (!set.contains(it.next()))
 					return false;
 			}
-			if (counter != set.size())
-				return false;
 			return true;
 		}
 }

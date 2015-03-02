@@ -138,6 +138,16 @@ public class KdTree {
 		if (p.x() < node.point.x()) {
 			if (node.leftDownChild == null)
 				return node.point;
+			Point2D nearestLeft = nearestHorizontal(node.leftDownChild, p);
+			Point2D nearestRight = nearestHorizontal(node.rightUpChild, p);
+		}
+	
+	}
+	
+	private Point2D nearestVertical(KdTreeNode node, Point2D p) {
+		if (p.x() < node.point.x()) {
+			if (node.leftDownChild == null)
+				return node.point;
 			else {
 				Point2D temp = nearestHorizontal(node.leftDownChild, p);
 				if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))

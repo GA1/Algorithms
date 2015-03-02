@@ -12,12 +12,12 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		String fileName = "blotto_results_with_no_spaces.txt";
 		Strategy[] allStrategiesFromPreviousTournament = loadStrategies(fileName);
-		Strategy[] bestStrategiesFromPreviousTournament = copyArray(allStrategiesFromPreviousTournament, 0, 500);
+		Strategy[] bestStrategiesFromPreviousTournament = copyArray(allStrategiesFromPreviousTournament, 0, allStrategiesFromPreviousTournament.length);
 		
 		Strategy bestShuffledFromAll = bestOfAllShuffledResults(strategyBuilder.buildStrategies(5, 8, 11, 18), bestStrategiesFromPreviousTournament);
 		System.out.println("Points for the best shuffling of the strategy: " + getPointsForFightingWithTheStrategies(bestShuffledFromAll, bestStrategiesFromPreviousTournament));
 		System.out.println("The best strategy is: " + bestShuffledFromAll.toString());
-		System.out.println("Average Strategy is: " + meanValue(allStrategiesFromPreviousTournament, 0, 1400));
+		System.out.println("Average Strategy is: " + meanValue(allStrategiesFromPreviousTournament, 0, allStrategiesFromPreviousTournament.length));
 		
 		System.out.println(strategyBuilder.buildStrategies(5, 8, 11, 20));
 	}
