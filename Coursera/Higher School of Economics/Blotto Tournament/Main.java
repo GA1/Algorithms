@@ -16,7 +16,7 @@ public class Main {
 		System.out.println("BLOTTO I\n");
 		String fileName1 = "blottoresults1.txt";
 		Strategy[] allFrom1Tourn = loadStrategies(fileName1);
-		Strategy[] best500StrategiesFromFirstTourn = copyArray(allFrom1Tourn, 0, 1000);
+		Strategy[] best500StrategiesFromFirstTourn = copyArray(allFrom1Tourn, 0, 500);
 
 		System.out.println("Mean strategy from the 1st tourn is: " + meanValue(allFrom1Tourn, 0, allFrom1Tourn.length));
 		
