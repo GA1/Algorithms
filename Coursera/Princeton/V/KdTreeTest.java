@@ -167,6 +167,14 @@ public class KdTreeTest {
 	}
 	
 	@Test
+	public void test0225() {
+		kdTree.insert(new Point2D(6, 6));
+		kdTree.insert(new Point2D(2, 3));
+		kdTree.insert(new Point2D(7, 3));
+		assertEquals(new Point2D(2, 7), kdTree.nearest(new Point2D(2, 5)));	
+	}
+	
+	@Test
 	public void test0230() {
 		kdTree.insert(new Point2D(2, 2));
 		kdTree.insert(new Point2D(1, 2));

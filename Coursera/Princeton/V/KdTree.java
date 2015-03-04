@@ -35,6 +35,11 @@ public class KdTree {
 		public boolean isVertical() {
 			return !isVertical;
 		}
+
+		@Override
+		public String toString() {
+			return "KdTreeNode [point=" + point + "]";
+		}
 	}
 
 	// construct an empty set of points
@@ -134,70 +139,99 @@ public class KdTree {
 		return nearestVertical(root, p);
 	}
 
-	private Point2D nearestVertical(KdTreeNode node, Point2D p) {
-		if (p.x() < node.point.x()) {
-			if (node.leftDownChild == null)
+		private Point2D nearestVertical(KdTreeNode node, Point2D p) {
+			if (nodeHasNoChildren(node))
 				return node.point;
-			Point2D nearestLeft = nearestHorizontal(node.leftDownChild, p);
-			Point2D nearestRight = nearestHorizontal(node.rightUpChild, p);
-		}
-	
-	}
-	
-	private Point2D nearestVertical(KdTreeNode node, Point2D p) {
-		if (p.x() < node.point.x()) {
-			if (node.leftDownChild == null)
-				return node.point;
-			else {
-				Point2D temp = nearestHorizontal(node.leftDownChild, p);
-				if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
-					return temp;
-				else
-					return node.point;
+			if (p.x() < node.point.x()) {
+				if (node.leftDownChild == null)
+					return closestOfTwo(nearestHorizontal(node.rightUpChild, p), node.point, p);
+				Point2D nearestLeft = nearestHorizontal(node.leftDownChild, p);
+				Point2D betterOfLeftAndPresetnt = closestOfTwo(nearestLeft, node.point, p);
+				if (betterOfLeftAndPresetnt.distanceSquaredTo(p) > Math.abs(betterOfLeftAndPresetnt.x() - node.point.x()))
+					return closestOfTwo(nearestHorizontal(node.rightUpChild, p), node.point, p);
 			}
-		} else {
-			if (node.rightUpChild == null)
-				return node.point;
-			else {
-				Point2D temp = nearestHorizontal(node.rightUpChild, p);
-				if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
-					return temp;
-				else
-					return node.point;
-			}
+			return p;
+		
 		}
-	}
 
-	private Point2D nearestVer(KdTreeNode node, Point2D p) {
-		if (p.x() < node.point.x()) {
-			Point2D leftBestPoint = nearestVertical(node.leftDownChild, p);
-			if (leftBestPoint.x())
+			private Point2D closestOfTwo(Point2D nearestHorizontal, Point2D point, Point2D p) {
+				if (nearestHorizontal.distanceSquaredTo(p) < point.distanceSquaredTo(p))
+					return nearestHorizontal;
+				else 
+					return point;
+			}
+
+			private boolean nodeHasNoChildren(KdTreeNode node) {
+				return node.leftDownChild == null && node.rightUpChild == null;
+			}
+		
+		private Point2D nearestHorizontal(KdTreeNode node, Point2D p) {
+			if (nodeHasNoChildren(node))
+				return node.point;
+			if (p.x() < node.point.x()) {
+				if (node.leftDownChild == null)
+					return nearestHorizontal(node.rightUpChild, p);	
+				Point2D nearestLeft = nearestHorizontal(node.leftDownChild, p);
+				Point2D nearestRight = nearestHorizontal(node.rightUpChild, p);
+			}
+			return p;
+		
 		}
-	}
 	
-	private Point2D nearestHorizontal(KdTreeNode node, Point2D p) {
-		if (p.y() < node.point.y()) {
-			if (node.leftDownChild == null)
-				return node.point;
-			else {
-				Point2D temp = nearestVertical(node.leftDownChild, p);
-				if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
-					return temp;
-				else
-					return node.point;
-			}
-		} else {
-			if (node.rightUpChild == null)
-				return node.point;
-			else {
-				Point2D temp = nearestVertical(node.rightUpChild, p);
-				if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
-					return temp;
-				else
-					return node.point;
-			}
-		}
-	}
+//	private Point2D nearestVertical(KdTreeNode node, Point2D p) {
+//		if (p.x() < node.point.x()) {
+//			if (node.leftDownChild == null)
+//				return node.point;
+//			else {
+//				Point2D temp = nearestHorizontal(node.leftDownChild, p);
+//				if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
+//					return temp;
+//				else
+//					return node.point;
+//			}
+//		} else {
+//			if (node.rightUpChild == null)
+//				return node.point;
+//			else {
+//				Point2D temp = nearestHorizontal(node.rightUpChild, p);
+//				if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
+//					return temp;
+//				else
+//					return node.point;
+//			}
+//		}
+//	}
+//
+//	private Point2D nearestVer(KdTreeNode node, Point2D p) {
+//		if (p.x() < node.point.x()) {
+//			Point2D leftBestPoint = nearestVertical(node.leftDownChild, p);
+//			if (leftBestPoint.x())
+//		}
+//	}
+//	
+//	private Point2D nearestHorizontal(KdTreeNode node, Point2D p) {
+//		if (p.y() < node.point.y()) {
+//			if (node.leftDownChild == null)
+//				return node.point;
+//			else {
+//				Point2D temp = nearestVertical(node.leftDownChild, p);
+//				if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
+//					return temp;
+//				else
+//					return node.point;
+//			}
+//		} else {
+//			if (node.rightUpChild == null)
+//				return node.point;
+//			else {
+//				Point2D temp = nearestVertical(node.rightUpChild, p);
+//				if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
+//					return temp;
+//				else
+//					return node.point;
+//			}
+//		}
+//	}
 	
 	// private Point2D nearest(KdTreeNode node, Point2D p) {
 	// if (node.isVertical) {
