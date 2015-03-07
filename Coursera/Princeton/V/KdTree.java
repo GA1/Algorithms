@@ -64,26 +64,23 @@ public class KdTree {
 		root = insert(root, p, true);
 	}
 
-	private KdTreeNode insert(KdTreeNode node, Point2D p, boolean isVertical) {
+	private KdTreeNode insert(KdTreeNode node, Point2D toInsert, boolean isVertical) {
 		if (node == null) {
 			size++;
-			return new KdTreeNode(p, null, null, isVertical);
+			return new KdTreeNode(toInsert, null, null, isVertical);
 		} else {
-			if (p.equals(node.point))
+			if (toInsert.equals(node.point))
 				return node;
 			if (isVertical) {
-				if (p.x() < node.point.x())
-					node.leftDownChild = insert(node.leftDownChild, p,
-							!isVertical);
+				if (toInsert.x() < node.point.x())
+					node.leftDownChild = insert(node.leftDownChild, toInsert, !isVertical);
 				else
-					node.rightUpChild = insert(node.rightUpChild, p,
-							!isVertical);
+					node.rightUpChild = insert(node.rightUpChild, toInsert, !isVertical);
 			} else {
-				if (p.y() < node.point.y())
-					node.leftDownChild = insert(node.leftDownChild, p,
-							isVertical);
+				if (toInsert.y() < node.point.y())
+					node.leftDownChild = insert(node.leftDownChild, toInsert, isVertical);
 				else
-					node.rightUpChild = insert(node.rightUpChild, p, isVertical);
+					node.rightUpChild = insert(node.rightUpChild, toInsert, isVertical);
 			}
 		}
 		return node;
@@ -96,20 +93,22 @@ public class KdTree {
 		return contains(root, p);
 	}
 
-	private boolean contains(KdTreeNode node, Point2D p) {
-		if (p.equals(node.point))
+	private boolean contains(KdTreeNode node, Point2D toFind) {
+		if (node == null)
+			return false;
+		if (toFind.equals(node.point))
 			return true;
 		else {
 			if (node.isVertical) {
-				if (p.x() < node.point.x())
-					return contains(node.leftDownChild, p);
+				if (toFind.x() < node.point.x())
+					return contains(node.leftDownChild, toFind);
 				else
-					return contains(node.rightUpChild, p);
+					return contains(node.rightUpChild, toFind);
 			} else {
-				if (p.y() < node.point.y())
-					return contains(node.leftDownChild, p);
+				if (toFind.y() < node.point.y())
+					return contains(node.leftDownChild, toFind);
 				else
-					return contains(node.rightUpChild, p);
+					return contains(node.rightUpChild, toFind);
 			}
 		}
 	}
@@ -124,11 +123,31 @@ public class KdTree {
 		if (rect == null)
 			throw new NullPointerException();
 		List<Point2D> pointsInRange = new ArrayList<Point2D>();
-		// for (Point2D p: points)
-		// if (rect.contains(p))
-		// pointsInRange.add(p);
+		rangeVertical(root, rect, pointsInRange);
 		return pointsInRange;
 	}
+
+		private void rangeVertical(KdTreeNode node, RectHV rect, List<Point2D> pointsInRange) {
+			if (node == null)
+				return;
+			if (rect.xmin() < node.point.x())
+				rangeHorizontal(node.leftDownChild, rect, pointsInRange);
+			if (node.point.x() < rect.xmax())
+				rangeHorizontal(node.rightUpChild, rect, pointsInRange);	
+			if (rect.contains(node.point))
+				pointsInRange.add(node.point);		
+		}
+
+		private void rangeHorizontal(KdTreeNode node, RectHV rect, List<Point2D> pointsInRange) {
+			if (node == null)
+				return;
+			if (rect.ymin() < node.point.y())
+				rangeVertical(node.leftDownChild, rect, pointsInRange);
+			if (node.point.y() < rect.ymax())
+				rangeVertical(node.rightUpChild, rect, pointsInRange);	
+			if (rect.contains(node.point))
+				pointsInRange.add(node.point);		
+		}
 
 	// a nearest neighbor in the set to point p; null if the set is empty
 	public Point2D nearest(Point2D p) {
@@ -139,143 +158,54 @@ public class KdTree {
 		return nearestVertical(root, p);
 	}
 
-		private Point2D nearestVertical(KdTreeNode node, Point2D p) {
-			if (nodeHasNoChildren(node))
-				return node.point;
-			if (p.x() < node.point.x()) {
-				if (node.leftDownChild == null)
-					return closestOfTwo(nearestHorizontal(node.rightUpChild, p), node.point, p);
-				Point2D nearestLeft = nearestHorizontal(node.leftDownChild, p);
-				Point2D betterOfLeftAndPresetnt = closestOfTwo(nearestLeft, node.point, p);
-				if (betterOfLeftAndPresetnt.distanceSquaredTo(p) > Math.abs(betterOfLeftAndPresetnt.x() - node.point.x()))
-					return closestOfTwo(nearestHorizontal(node.rightUpChild, p), node.point, p);
-			}
-			return p;
-		
+		private Point2D nearestVertical(KdTreeNode presentNode, Point2D toFind) {
+			if (hasNoChildren(presentNode))
+				return presentNode.point;
+			if (toFind.x() < presentNode.point.x())
+				return processVertically(presentNode, presentNode.leftDownChild, presentNode.rightUpChild, toFind);
+			else 
+				return processVertically(presentNode, presentNode.rightUpChild, presentNode.leftDownChild, toFind);
 		}
-
-			private Point2D closestOfTwo(Point2D nearestHorizontal, Point2D point, Point2D p) {
-				if (nearestHorizontal.distanceSquaredTo(p) < point.distanceSquaredTo(p))
-					return nearestHorizontal;
-				else 
-					return point;
-			}
-
-			private boolean nodeHasNoChildren(KdTreeNode node) {
-				return node.leftDownChild == null && node.rightUpChild == null;
-			}
 		
-		private Point2D nearestHorizontal(KdTreeNode node, Point2D p) {
-			if (nodeHasNoChildren(node))
-				return node.point;
-			if (p.x() < node.point.x()) {
-				if (node.leftDownChild == null)
-					return nearestHorizontal(node.rightUpChild, p);	
-				Point2D nearestLeft = nearestHorizontal(node.leftDownChild, p);
-				Point2D nearestRight = nearestHorizontal(node.rightUpChild, p);
+			private Point2D processVertically(KdTreeNode presentNode, KdTreeNode A, KdTreeNode B, Point2D toFind) {
+				Point2D bestOfAandPresent = presentNode.point; 
+				if (A != null)
+					bestOfAandPresent = closestOfTwo(nearestHorizontal(A, toFind), presentNode.point, toFind);
+				Point2D bestOfAandBandPresent = bestOfAandPresent;
+				if (B != null && bestOfAandPresent.distanceSquaredTo(toFind) > Math.abs(bestOfAandPresent.x() - presentNode.point.x()))
+					 bestOfAandBandPresent = closestOfTwo(nearestHorizontal(B, toFind), bestOfAandPresent, toFind);
+				return bestOfAandBandPresent;
 			}
-			return p;
-		
+			
+		private Point2D nearestHorizontal(KdTreeNode presentNode, Point2D toFind) {
+			if (hasNoChildren(presentNode))
+				return presentNode.point;
+			if (toFind.y() < presentNode.point.y())
+				return processHorizontally(presentNode, presentNode.leftDownChild, presentNode.rightUpChild, toFind);
+			else 
+				return processHorizontally(presentNode, presentNode.rightUpChild, presentNode.leftDownChild, toFind);
 		}
-	
-//	private Point2D nearestVertical(KdTreeNode node, Point2D p) {
-//		if (p.x() < node.point.x()) {
-//			if (node.leftDownChild == null)
-//				return node.point;
-//			else {
-//				Point2D temp = nearestHorizontal(node.leftDownChild, p);
-//				if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
-//					return temp;
-//				else
-//					return node.point;
-//			}
-//		} else {
-//			if (node.rightUpChild == null)
-//				return node.point;
-//			else {
-//				Point2D temp = nearestHorizontal(node.rightUpChild, p);
-//				if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
-//					return temp;
-//				else
-//					return node.point;
-//			}
-//		}
-//	}
-//
-//	private Point2D nearestVer(KdTreeNode node, Point2D p) {
-//		if (p.x() < node.point.x()) {
-//			Point2D leftBestPoint = nearestVertical(node.leftDownChild, p);
-//			if (leftBestPoint.x())
-//		}
-//	}
-//	
-//	private Point2D nearestHorizontal(KdTreeNode node, Point2D p) {
-//		if (p.y() < node.point.y()) {
-//			if (node.leftDownChild == null)
-//				return node.point;
-//			else {
-//				Point2D temp = nearestVertical(node.leftDownChild, p);
-//				if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
-//					return temp;
-//				else
-//					return node.point;
-//			}
-//		} else {
-//			if (node.rightUpChild == null)
-//				return node.point;
-//			else {
-//				Point2D temp = nearestVertical(node.rightUpChild, p);
-//				if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
-//					return temp;
-//				else
-//					return node.point;
-//			}
-//		}
-//	}
-	
-	// private Point2D nearest(KdTreeNode node, Point2D p) {
-	// if (node.isVertical) {
-	// if (p.x() < node.point.x()) {
-	// if (node.leftDownChild == null)
-	// return node.point;
-	// else {
-	// Point2D temp = nearest(node.leftDownChild, p);
-	// if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
-	// return temp;
-	// else return node.point;
-	// }
-	// } else {
-	// if (node.rightUpChild == null)
-	// return node.point;
-	// else {
-	// Point2D temp = nearest(node.rightUpChild, p);
-	// if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
-	// return temp;
-	// else return node.point;
-	// }
-	// }
-	// } else {
-	// if (p.y() < node.point.y()) {
-	// if (node.leftDownChild == null)
-	// return node.point;
-	// else {
-	// Point2D temp = nearest(node.leftDownChild, p);
-	// if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
-	// return temp;
-	// else return node.point;
-	// }
-	// } else {
-	// if (node.rightUpChild == null)
-	// return node.point;
-	// else {
-	// Point2D temp = nearest(node.rightUpChild, p);
-	// if (p.distanceSquaredTo(temp) < node.point.distanceSquaredTo(p))
-	// return temp;
-	// else return node.point;
-	// }
-	// }
-	// }
-	// }
+		
+			private Point2D processHorizontally(KdTreeNode presentNode, KdTreeNode A, KdTreeNode B, Point2D toFind) {
+				Point2D bestOfAandPresent = presentNode.point; 
+				if (A != null)
+					bestOfAandPresent = closestOfTwo(nearestVertical(A, toFind), presentNode.point, toFind);
+				Point2D bestOfAandBandPresent = bestOfAandPresent;
+				if (B != null && bestOfAandPresent.distanceSquaredTo(toFind) > Math.abs(bestOfAandPresent.y() - presentNode.point.y()))
+					 bestOfAandBandPresent = closestOfTwo(nearestVertical(B, toFind), bestOfAandPresent, toFind);
+				return bestOfAandBandPresent;
+			}
+
+				private Point2D closestOfTwo(Point2D nearestHorizontal, Point2D point, Point2D p) {
+					if (nearestHorizontal.distanceSquaredTo(p) <= point.distanceSquaredTo(p))
+						return nearestHorizontal;
+					else 
+						return point;
+				}
+
+				private boolean hasNoChildren(KdTreeNode node) {
+					return node.leftDownChild == null && node.rightUpChild == null;
+				}
 
 	// unit testing of the methods (optional)
 	public static void main(String[] args) {
