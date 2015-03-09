@@ -276,6 +276,20 @@ public class KdTreeTest {
 	}
 	
 	@Test
+	public void test065() {
+		kdTree.insert(new Point2D(8, 8));
+		kdTree.insert(new Point2D(12, 4));
+		kdTree.insert(new Point2D(14, 2));
+		kdTree.insert(new Point2D(15, 3));
+		assertEquals(new Point2D(8, 8), kdTree.nearest(new Point2D(7, 7)));
+		assertEquals(new Point2D(12, 4), kdTree.nearest(new Point2D(7, 1)));
+		assertEquals(new Point2D(12, 4), kdTree.nearest(new Point2D(12, 5)));
+		assertEquals(new Point2D(12, 4), kdTree.nearest(new Point2D(12, 5)));
+		assertEquals(new Point2D(14, 2), kdTree.nearest(new Point2D(13, 1)));
+		assertEquals(new Point2D(15, 3), kdTree.nearest(new Point2D(16, 3)));
+	}
+	
+	@Test
 	public void test070() {
 		kdTree.insert(new Point2D(6, 6));
 		kdTree.insert(new Point2D(5, 1));
@@ -283,7 +297,7 @@ public class KdTreeTest {
 	}
 	
 	@Test 
-	public void test200() {
+	public void test075() {
 		kdTree.insert(new Point2D(3, 5));
 		kdTree.insert(new Point2D(1, 1));
 		pointSET.insert(new Point2D(3, 5));
@@ -397,12 +411,60 @@ public class KdTreeTest {
 		assertTrue(iteratorContainsAllElementsFromTheSetAndNothingElse(iterable.iterator(), expected) );
 	}
 	
+	@Test
+	public void test190() {
+		kdTree.insert(new Point2D(1, 1));
+		kdTree.insert(new Point2D(2, 2));
+		kdTree.insert(new Point2D(3, 3));
+		kdTree.insert(new Point2D(4, 4));
+		kdTree.insert(new Point2D(5, 5));
+		kdTree.insert(new Point2D(11, 11));
+		expected.add(new Point2D(1, 1));
+		expected.add(new Point2D(2, 2));
+		expected.add(new Point2D(3, 3));
+		expected.add(new Point2D(4, 4));
+		expected.add(new Point2D(5, 5));
+		Iterable<Point2D> iterable = kdTree.range(new RectHV(0, 0, 10, 10));
+		assertTrue(iteratorContainsAllElementsFromTheSetAndNothingElse(iterable.iterator(), expected) );
+	}
 	
+	@Test
+	public void test200() {
+		kdTree.insert(new Point2D(5, 5));
+		kdTree.insert(new Point2D(4, 4));
+		kdTree.insert(new Point2D(3, 3));
+		kdTree.insert(new Point2D(2, 2));
+		kdTree.insert(new Point2D(1, 1));
+		kdTree.insert(new Point2D(11, 11));
+		expected.add(new Point2D(1, 1));
+		expected.add(new Point2D(2, 2));
+		expected.add(new Point2D(3, 3));
+		expected.add(new Point2D(4, 4));
+		expected.add(new Point2D(5, 5));
+		Iterable<Point2D> iterable = kdTree.range(new RectHV(0, 0, 10, 10));
+		assertTrue(iteratorContainsAllElementsFromTheSetAndNothingElse(iterable.iterator(), expected) );
+	}
 	
+	@Test
+	public void test210() {
+		insertPointToKdTreeAndPointSet(new Point2D(5, 5));
+		insertPointToKdTreeAndPointSet(new Point2D(4, 5));
+		insertPointToKdTreeAndPointSet(new Point2D(3, 7));
+		insertPointToKdTreeAndPointSet(new Point2D(3, 2));
+		insertPointToKdTreeAndPointSet(new Point2D(6, 5));
+		insertPointToKdTreeAndPointSet(new Point2D(6, 5));
+		insertPointToKdTreeAndPointSet(new Point2D(7, 7));
+		insertPointToKdTreeAndPointSet(new Point2D(7, 3));
+		assertTrue(pointSET.nearest(new Point2D(4, 4)).equals(kdTree.nearest(new Point2D(4, 4))));
+		assertTrue(pointSET.nearest(new Point2D(2, 1)).equals(kdTree.nearest(new Point2D(2, 1))));
+		assertTrue(pointSET.nearest(new Point2D(6, 3)).equals(kdTree.nearest(new Point2D(6, 3))));
+	}
 	
+		private void insertPointToKdTreeAndPointSet(Point2D point2d) {
+			kdTree.insert(point2d);
+			pointSET.insert(point2d);
+		}
 
-
-	
 		private boolean iteratorContainsAllElementsFromTheSetAndNothingElse(Iterator<Point2D> it, Set<Point2D> set) {
 			int counter = 0;
 			while (it.hasNext()) {
