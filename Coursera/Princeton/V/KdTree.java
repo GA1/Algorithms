@@ -78,9 +78,9 @@ public class KdTree {
 					node.rightUpChild = insert(node.rightUpChild, toInsert, !isVertical);
 			} else {
 				if (toInsert.y() < node.point.y())
-					node.leftDownChild = insert(node.leftDownChild, toInsert, isVertical);
+					node.leftDownChild = insert(node.leftDownChild, toInsert, !isVertical);
 				else
-					node.rightUpChild = insert(node.rightUpChild, toInsert, isVertical);
+					node.rightUpChild = insert(node.rightUpChild, toInsert, !isVertical);
 			}
 		}
 		return node;

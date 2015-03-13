@@ -2,6 +2,13 @@ public class Point2D implements Comparable<Point2D>  {
 	
 	private double x;
 	private double y;
+	private String name;
+	
+	public Point2D(double x, double y, String name) {
+		this.x = x;
+		this.y = y;
+		this.name = name;
+	}
 	
 	// construct the point (x, y)
 	public Point2D(double x, double y) {
@@ -81,6 +88,6 @@ public class Point2D implements Comparable<Point2D>  {
 
 	// string representation
 	public String toString() {
-		return "(" + x + ", " + y + ")";
+		return "(" + x + ", " + y + ")" + name;
 	}
 }
