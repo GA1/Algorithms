@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -24,24 +23,10 @@ public class TwoSum {
 	}
 
 	public boolean hasSum(int t) {
-		for (Long a : list) {
-			if (set.contains(t - a)){
+		for (Long a : list)
+			if (set.contains(t - a))
 				if (t - a != a)
 					return true;
-			}
-		}
-			
-				
-//		Iterator<Long> it = set.iterator();
-//		while (it.hasNext()) {
-//			Long a = it.next(); 
-//			if (set.contains(t - a)){
-//				if (t - a != a)
-//					return true;
-//			}
-//		}
-		
-		
 		return false;
 	}
 

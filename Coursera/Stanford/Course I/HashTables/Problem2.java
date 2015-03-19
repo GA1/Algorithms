@@ -9,7 +9,6 @@ public class Problem2 {
 	public static void main(String[] args) throws IOException {
 		
 		String fileName = "Median.txt";
-		MedianFinder finder = new MedianFinder();
 		List<String> lines = TxtFileProcessing.readLinesFromFile(fileName);
 		
 		List<Long> numbers = convertStringsToNumbers(lines);
