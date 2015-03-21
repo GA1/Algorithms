@@ -1,6 +1,9 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -11,56 +14,56 @@ public class AnagramsTest {
 	
 	Anagrams anagrams = new Anagrams();
 	String[] A;
-	private String[] result;
+	private List<String> result;
 	ArrayList<Anagrams.wordAndItsSort> wordsAndTheirSorts, W1, W2;
 	
 	@Test
 	public void test010() {
 		A = new String[]{};
-		assertEquals(null, anagrams.of(null));
+		assertNull(anagrams.of(null));
 	}
 	
 	@Test
 	public void test020() {
 		A = new String[]{};
-		assertEquals(new String[]{}, anagrams.of(A));
+		assertEquals(new ArrayList<String>(), Arrays.asList(anagrams.of(A)));
 	}
 	
 	@Test
 	public void test030() {
 		A = new String[]{"demoniac"};
-		assertEquals(new String[]{}, anagrams.of(A));
+		assertEquals(new ArrayList<String>(), Arrays.asList(anagrams.of(A)));
 	}
 
 	@Test
 	public void test040() {
 		A = new String[]{"demoniac", "comedian"};
-		assertEquals(new String[]{"demoniac", "comedian"}, anagrams.of(A));
+		assertEquals(Arrays.asList(new String[]{"demoniac", "comedian"}), Arrays.asList(anagrams.of(A)));
 	}
 	
 	@Test
 	public void test045() {
 		A = new String[]{"demoniac", "comedian", "diancome"};
-		assertEquals(new String[]{"demoniac", "comedian", "diancome"}, anagrams.of(A));
+		assertEquals(Arrays.asList(new String[]{"demoniac", "comedian", "diancome"}), Arrays.asList(anagrams.of(A)));
 	}
 	
 	@Test
 	public void test047() {
 		A = new String[]{"demoniac", "comedian", "diancome", "abc", "bca"};
-		assertEquals(new String[]{"abc", "bca", "demoniac", "comedian", "diancome"}, anagrams.of(A));
+		assertEquals(Arrays.asList(new String[]{"abc", "bca", "demoniac", "comedian", "diancome"}), Arrays.asList(anagrams.of(A)));
 	}
 	
 	@Test
 	public void test048() {
 		A = new String[]{"demoniac", "comedian", "diancome", "abc", "bca", "ccc"};
-		assertEquals(new String[]{"abc", "bca", "demoniac", "comedian", "diancome"}, anagrams.of(A));
+		assertEquals(Arrays.asList(new String[]{"abc", "bca", "demoniac", "comedian", "diancome"}), Arrays.asList(anagrams.of(A)));
 	}
 	
 	@Test
 	public void test050() {
 		A = new String[]{"abc", "cba", "bca"};
-		result = new String[]{"abc", "cba", "bca"};
-		assertEquals(result, anagrams.of(A));
+		result = Arrays.asList(new String[]{"abc", "cba", "bca"});
+		assertEquals(result, Arrays.asList(anagrams.of(A)));
 	}
 	
 		
