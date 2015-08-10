@@ -111,12 +111,12 @@ public class DefaultEventManagerTest
     }
     
     @Test
-    public void testNoNotificationsReceivedByListenersOfSimpleEvent()
+    public void testNotificationsReceivedByListenersOfSimpleEvent()
     {
         EventListenerMock eventListenerMock = new EventListenerMock(new Class[]{SimpleEvent.class});
         eventManager.registerListener("some.key", eventListenerMock);
         eventManager.publishEvent(new SubEvent(this));
-        assertFalse(eventListenerMock.isCalled());
+        assertTrue(eventListenerMock.isCalled());
     }
     
     @Test
