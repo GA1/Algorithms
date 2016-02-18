@@ -39,7 +39,7 @@ public class BlockingQueue {
 					bq.enqueue(1);
 					bq.enqueue(2);
 					bq.enqueue(3);
-					Thread.sleep(3000);
+					Thread.sleep(2000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -50,7 +50,7 @@ public class BlockingQueue {
 			public void run() {
 				System.out.println("START SECOND");
 				try {
-					Thread.sleep(3000);
+					Thread.sleep(2000);
 					bq.dequeue();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -65,6 +65,5 @@ public class BlockingQueue {
 		firstThread.join();
 		secondThread.join();
 		System.out.println(bq.size());
-		
 	}
 }
