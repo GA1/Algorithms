@@ -22,7 +22,7 @@ public class ReentrantLock {
 		if (counter == 0) {
 			lockedBy = null;
 			isLocked = false;
-			notify();  // no need to wake up more than thread
+			notify();  // no need to wake up more than one thread
 		}
 	}
 
