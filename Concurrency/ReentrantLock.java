@@ -1,30 +1,43 @@
-public class SimpleLock {
+public class ReentrantLock {
 
 	private boolean isLocked;
+	private int counter = 0;
+	private Thread lockedBy = null;
+	
+	
 
 	public synchronized void lock() throws InterruptedException {
-		while (isLocked)
+		while (isLocked && Thread.currentThread() != lockedBy) 
 			wait();
+		lockedBy = Thread.currentThread();
 		isLocked = true;
+		counter++;
 		notifyAll();
 	}
 
 	public synchronized void unlock() throws InterruptedException {
-		while (!isLocked)
+		while (Thread.currentThread() != lockedBy)
 			wait();
-		isLocked = false;
-		notify();  // no need to wake up more than thread
+		counter--;
+		if (counter == 0) {
+			lockedBy = null;
+			isLocked = false;
+			notify();  // no need to wake up more than thread
+		}
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		SimpleLock simpleLock = new SimpleLock();
+		ReentrantLock reentrantLock = new ReentrantLock();
 		Runnable firstRunnable = new Runnable() {
 			@Override
 			public void run() {
 				System.out.println("START FIRST");
 				try {
-					simpleLock.lock();
-					simpleLock.lock();
+					reentrantLock.lock();
+					reentrantLock.lock();
+					Thread.sleep(3000);
+					reentrantLock.unlock();
+					reentrantLock.unlock();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -36,9 +49,10 @@ public class SimpleLock {
 			public void run() {
 				System.out.println("START SECOND");
 				try {
-					Thread.sleep(2000);
-					simpleLock.unlock();
-					Thread.sleep(2000);
+					Thread.sleep(1500);
+					reentrantLock.lock();
+					reentrantLock.lock();
+					Thread.sleep(1500);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
