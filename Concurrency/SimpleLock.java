@@ -13,7 +13,7 @@ public class SimpleLock {
 		while (!isLocked)
 			wait();
 		isLocked = false;
-		notify();  // no need to wake up more than one thread
+		notify();  // no need to wake up more than oneg thread
 	}
 
 	public static void main(String[] args) throws InterruptedException {

@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class RangeTest {
 
-	private Range range;
+	private Range range; 
 	private Range range1;
 	private Range range2;
 	private Range emptyRange = new Range(0,0);
