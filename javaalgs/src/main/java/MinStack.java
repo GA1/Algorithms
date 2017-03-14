@@ -1,6 +1,8 @@
 // create a MinStack which supports the standard stack operations and an additional operation
 // min() which returns the smallest number in the Stack
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class MinStack { 
@@ -9,8 +11,8 @@ public class MinStack {
     private Stack<Integer> minimums;
    
     public MinStack() {
-        stack = new Stack<>();
-        minimums = new Stack<>();
+        stack = new Stack<Integer>();
+        minimums = new Stack<Integer>();
     }
 
 

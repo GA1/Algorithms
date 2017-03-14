@@ -22,9 +22,8 @@ public class QueueWithTwoStacks<Item> {
 	}
 	
 		private void moveStack1ToStack2() {
-			while (!stack1.isEmpty()) {
+			while (!stack1.isEmpty())
 				stack2.push(stack1.pop());
-			}
 		}
 
 	public Object size() {

@@ -1,10 +1,10 @@
 
-public class probaDrzewo {
+public class Tree {
 
 	private Node root;
 	private int size;
 	
-	public probaDrzewo() {
+	public Tree() {
 		size = 0;
 	}
 	
