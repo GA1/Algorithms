@@ -1,3 +1,4 @@
+import externalhelpers.Queue;
 
 public class Josephus {
 

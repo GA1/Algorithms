@@ -1,12 +1,12 @@
 
+import externalhelpers.MinPQ;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 
-
 public class SortedSumOfCubes {
 
-	
 	MinPQ<Pair> minPq;
 	
 	public SortedSumOfCubes() {
@@ -38,7 +38,6 @@ public class SortedSumOfCubes {
 			this.a = a;
 			this.b = b;
 			sumOfCubes = a*a*a + b*b*b;
-//			sumOfCubes = a*a + b*b;
 		}
 
 		@Override
@@ -70,7 +69,6 @@ public class SortedSumOfCubes {
 			return true;
 		}
 
-		@Override
 		public int compareTo(Pair that) {
 			return ((Integer)this.sumOfCubes).compareTo((Integer)that.sumOfCubes);
 		}

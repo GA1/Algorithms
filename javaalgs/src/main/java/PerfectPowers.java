@@ -1,6 +1,7 @@
+import externalhelpers.MinPQ;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-
 
 
 public class PerfectPowers {
@@ -73,7 +74,6 @@ public class PerfectPowers {
 			return true;
 		}
 
-		@Override
 		public int compareTo(Pair that) {
 			return ((Integer)this.power).compareTo((Integer)that.power);
 		}

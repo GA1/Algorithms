@@ -1,3 +1,6 @@
+import externalhelpers.MaxPQ;
+import externalhelpers.MinPQ;
+
 public class Median {
 
 	private MinPQ<Integer> minPq;

@@ -1,3 +1,4 @@
+import externalhelpers.Stack;
 
 public class StackMax extends Stack<Integer>{
 
@@ -11,9 +12,8 @@ public class StackMax extends Stack<Integer>{
 	@Override
 	public Integer pop() {
 		Integer result = super.pop();
-		if (maximums.peek() == result) {
+		if (maximums.peek() == result)
 			maximums.pop();
-		}
 		return result;
 	}
 	

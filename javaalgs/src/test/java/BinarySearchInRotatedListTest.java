@@ -1,6 +1,8 @@
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 public class BinarySearchInRotatedListTest {
@@ -14,7 +16,7 @@ public class BinarySearchInRotatedListTest {
 		A = new int[]{2, 1};
 		assertEquals(1, searcher.findLeapIndexLinearly(A));
 	}
-	
+
 	@Test
 	public void test008() {
 		A = new int[]{1, 1};
