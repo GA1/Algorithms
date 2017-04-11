@@ -17,7 +17,6 @@ public class MergeSortTest extends SortingTest{
 		return new MergeSort();
 	}
 
-	
 	@Test
 	public void test1000() {
 		A = new Integer[]{1};
