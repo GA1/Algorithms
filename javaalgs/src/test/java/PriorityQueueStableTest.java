@@ -14,7 +14,6 @@ public class PriorityQueueStableTest {
 			this.string = string;
 		}
 		
-		@Override
 		public int compareTo(A that) {
 			return this.number.compareTo(that.number);			
 		}
