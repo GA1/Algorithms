@@ -1,4 +1,9 @@
-var x = require('../Queue');
+var x = require('../QueueSlow');
+
+test('empty queue throws an error if we try to dequeue', () => {
+  var q = new x.Queue()
+  expect(() => q.dequeue()).toThrow();
+})
 
 test('empty queue is of size 0', () => {
   var q = new x.Queue()
@@ -44,4 +49,13 @@ test('enqueue 2 elements, dequeue both elements', () => {
   q.enqueue(5)
   expect(q.dequeue()).toEqual(2);
   expect(q.dequeue()).toEqual(5);
+})
+
+test('enqueue 2 elements, dequeue both elements', () => {
+  var q = new x.Queue()
+  q.enqueue(2)
+  q.enqueue(5)
+  q.dequeue()
+  q.dequeue()
+  expect(q.size()).toEqual(0);
 })

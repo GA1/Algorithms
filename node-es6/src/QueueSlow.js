@@ -16,6 +16,8 @@ Queue.prototype.pop = function() {
 }
 
 Queue.prototype.dequeue = function() {
+  if (this.data.length === 0)
+    throw new Error("Underflow")
   return this.data.shift()
 }
 
